@@ -1,0 +1,8 @@
+"""Settings for find chains."""
+CHAIN_NAMES = set(['EPO', 'JEF', 'ISO'])
+CHAIN_BONDS = set([
+  (('C1', 'EPO'), ('N1', 'JEF')),
+  (('C1', 'EPO'), ('N1', 'ISO'))
+  ])
+# New chain format, keep in mind that the total length can be only 4 characters
+NEW_CHAIN_FORMAT = 'E%03d'  # it will create the chain names:  EX001 EX002 EX003

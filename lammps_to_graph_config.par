@@ -1,0 +1,2 @@
+BOND_TYPES = [5, 6]
+ACTIVE_SITES = [1, 5, 6, 7, 8, 9]

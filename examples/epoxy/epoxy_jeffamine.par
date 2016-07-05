@@ -1,0 +1,116 @@
+# Chain IDS
+EPOXY = 'EPO'
+DET = 'JEF'
+
+# Define some constants, name, chain_name, max_degree
+DET_N1 = Atom(name='N1', chain_name=DET, max_degree=3)
+DET_C1 = Atom(name='C1', chain_name=DET, max_degree=4)
+DET_C2 = Atom(name='C2', chain_name=DET, max_degree=4)
+DET_C3 = Atom(name='C3', chain_name=DET, max_degree=4)
+DET_H1 = Atom(name='H1', chain_name=DET, max_degree=1)
+
+EPOXY_C1 = Atom(name='C1', chain_name=EPOXY, max_degree=4)
+EPOXY_C2 = Atom(name='C2', chain_name=EPOXY, max_degree=4)
+EPOXY_C3 = Atom(name='C3', chain_name=EPOXY, max_degree=4)
+EPOXY_H0 = Atom(name='H0', chain_name=EPOXY, max_degree=1)
+EPOXY_H2 = Atom(name='H2', chain_name=EPOXY, max_degree=1)
+EPOXY_H11 = Atom(name='H11', chain_name=EPOXY, max_degree=1, radius=1.0)
+EPOXY_H12 = Atom(name='H12', chain_name=EPOXY, max_degree=1, radius=1.0)
+EPOXY_O1 = Atom(name='O1', chain_name=EPOXY, max_degree=2)
+ 
+BOND_1 = (EPOXY_C1, DET_N1)
+
+# The atom symbols that should form a bond.
+ATOM_PAIRS = [BOND_1]
+
+# For given atom pairs define the length of the bond and the frequency (according to the
+# selected force field). Please use the same order as in ATOM_PAIRS
+BOND_CONFIG = {
+    BOND_1: [1, 0.146, 319657.6] 
+    }
+
+# Define the geometric constraints. If you define multiple type of constraints
+# all of them has to match. Although the definition of the constrain contains a
+# list of conditions, mainly because there could be a multiple definition of the
+# cone for each of the bond type. e.g. the molecule has two ends that forms bond with
+# the same type. This list is evaluated with rule first-found-first-executed.
+#
+# * 'cone'
+# So for each of the new bond type you can define the cone in which the new
+# bond should fall in. The definition is as follow:
+# (apex_point, second_vecotr, inside_angle, operator)
+# where operator can be '<' or '>'. The '<' meen that the vector has to be
+# inside the cone, the second meen that the vector has to be outside the
+# cone.
+#
+# * 'vector'
+# (vec1_start, vec1_end, vec2_start, vec2_end, angle)
+# the angle can be define as the range or as the single value. For the single value the '='
+# operator will be used otherwise the '>=', '<=' operators.
+# Additional remark, the direction of the vector will be not checked. 
+# 
+# * 'align'
+# (vec1_start, vec1_end, vec2_start, vec2_end)
+# Check if two vectors points in the same direction, it can be usefull to combine
+# with the cone or vector constraints
+#
+# * 'sphere'
+# (list of spheres)
+#
+# Not required.
+# Allow to intramolecular bond forming (by default it is set to True)
+# Not required.
+INTRAMOLECULAR_BONDS=True
+
+# Setup for the angles, order does matter - it's a pattern not set.
+ANGLES = {
+      BOND_1: {
+          (DET_N1, EPOXY_C1, EPOXY_C2): [1, 109.300, 292.8800],
+          (DET_C1, DET_N1, EPOXY_C1): [1, 110.600, 292.8800],
+          (EPOXY_C1, DET_N1, EPOXY_C1): [1, 114.800, 292.8800],
+          (DET_N1, EPOXY_C1, EPOXY_H11): [1, 109.1200, 292.8800],
+          (DET_N1, EPOXY_C1, EPOXY_H12): [1, 109.1200, 292.8800],
+          }
+      }
+
+DIHEDRALS = {
+    BOND_1: {
+        (DET_C1, DET_N1, EPOXY_C1, EPOXY_C2):    [3],
+        (DET_C1, DET_N1, EPOXY_C1, EPOXY_H11):   [3],
+        (DET_C1, DET_N1, EPOXY_C1, EPOXY_H12):   [3],
+        (DET_N1, EPOXY_C1, EPOXY_C2, EPOXY_C3):  [3],
+        (DET_N1, EPOXY_C1, EPOXY_C2, EPOXY_O1):  [3],
+        (DET_N1, EPOXY_C1, EPOXY_C2, EPOXY_H2):  [3],
+        (DET_C2, DET_C1, DET_N1, EPOXY_C1):      [3],
+        (DET_C3, DET_C1, DET_N1, EPOXY_C1):      [3],
+        (DET_H1, DET_C1, DET_N1, EPOXY_C1):      [3],
+        (EPOXY_H11, EPOXY_C1, DET_N1, EPOXY_C1): [3],
+        (EPOXY_H12, EPOXY_C1, DET_N1, EPOXY_C1): [3],
+        (EPOXY_C2, EPOXY_C1, DET_N1, EPOXY_C1):  [3],
+        (EPOXY_C1, DET_N1, EPOXY_C1, EPOXY_H11): [3],
+        (EPOXY_C1, DET_N1, EPOXY_C1, EPOXY_H12): [3],
+        (EPOXY_C1, DET_N1, EPOXY_C1, EPOXY_C2):  [3] 
+       }
+    }
+
+PAIRS = {
+    BOND_1: [1] 
+    }
+
+# The cutoff distance of each of the ATOM_PAIRS, depending on the current cross-link density.
+# Example:
+# CUTOFF_DISTANCE = {0.0: 3.5, 0.55: 6.0, 0.70: 7.0}
+# In this case, ro < 55% -> cutoff: 3.5, ro >= 55% -> cutoff: 6.0, ro >= 70% -> cutoff: 7.0 
+CUTOFF_DISTANCE = {0.0: 3.5, 0.55: 6.0}
+
+# Set the total number of bonds, required to calculate the bonds density.
+TOTAL_NUMBER_OF_CROSSLINKS = 400 
+
+# Cutoff Pairs
+CUTOFF_PAIRS = 4.0
+
+# Settings for finding the optimal cut-off
+INITIAL_CUTOFF = 1.4
+CUTOFF_STEP = 0.05
+EXPECTED_DENSITY = 0.05
+  
