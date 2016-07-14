@@ -1,4 +1,4 @@
-BondMatcher
+YAPT - Yet Another Polymerization Tool
 =================
 
 Requirements
